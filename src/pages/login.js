@@ -10,9 +10,14 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { loginApi } from "../apis";
+import { useDispatch } from "react-redux";
+import { setTokenToStore } from "../slice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
@@ -46,18 +51,23 @@ export default function Login() {
     if (!tempError.email && !tempError.password) {
       try {
         const response = await loginApi(formData);
-        navigate("/profile");
-        console.log("res", response);
+        if (response?.data) {
+          dispatch(setTokenToStore(response?.data.token));
+          toast(response?.data.message);
+          setTimeout(() => {
+            navigate("/profile");
+          }, 2000);
+        }
       } catch (error) {
-        console.log("error", error);
+        toast(error?.response?.data?.data?.message);
       }
     }
   };
 
   return (
     <Container component="main" maxWidth="xs">
+      <ToastContainer />
       <CssBaseline />
-
       <Box
         sx={{
           marginTop: 8,
@@ -80,6 +90,8 @@ export default function Login() {
               name="email"
               value={formData.email}
               onChange={inputHandler}
+              error={error.email}
+              helperText={error.email}
             />
             <TextField
               margin="normal"
@@ -90,6 +102,8 @@ export default function Login() {
               type="password"
               value={formData.password}
               onChange={inputHandler}
+              error={error.password}
+              helperText={error.password}
             />
             <Button
               type="submit"

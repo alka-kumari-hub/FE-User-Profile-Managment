@@ -9,8 +9,12 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { registerApi } from "../apis";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
@@ -53,13 +57,21 @@ export default function SignUp() {
     if (!tempError.name && !tempError.email && !tempError.password) {
       try {
         const response = await registerApi(formData);
-        console.log("res", response);
-      } catch (error) {}
+        if (response.data) {
+          toast(response?.data.message);
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        }
+      } catch (error) {
+        alert(error);
+      }
     }
   };
 
   return (
     <Container component="main" maxWidth="xs">
+      <ToastContainer />
       <CssBaseline />
       <Box
         sx={{
@@ -77,7 +89,6 @@ export default function SignUp() {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
                   name="name"
                   required
                   fullWidth
