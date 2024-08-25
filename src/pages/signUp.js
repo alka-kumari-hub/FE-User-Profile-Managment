@@ -82,7 +82,7 @@ export default function SignUp() {
         }}
       >
         <Card sx={{ padding: "2vw" }}>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
             Sign up
           </Typography>
           <Box noValidate sx={{ mt: 3 }}>

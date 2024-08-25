@@ -157,6 +157,7 @@ const Profile = () => {
                 fontWeight: "bold",
                 fontSize: "2vw",
                 marginBottom: "0.5vw",
+                textAlign: "center",
               }}
             >
               Your Profile

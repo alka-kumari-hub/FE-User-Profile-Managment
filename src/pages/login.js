@@ -77,7 +77,7 @@ export default function Login() {
         }}
       >
         <Card sx={{ padding: "2vw" }}>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" sx={{ textAlign: "center" }}>
             Sign in
           </Typography>
           <Box noValidate sx={{ mt: 1 }}>
